@@ -1,0 +1,10 @@
+import type { Locale } from '../i18n';
+import type { Pack } from './types';
+import bn from './bn';
+import ar from './ar';
+import zh from './zh';
+import es from './es';
+import fr from './fr';
+import it from './it';
+import pl from './pl';
+export const packs: Partial<Record<Locale, Pack>> = { bn, ar, zh, es, fr, it, pl };

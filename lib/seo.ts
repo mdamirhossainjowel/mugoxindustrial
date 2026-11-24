@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { locales, ogLocale, type Locale } from './i18n';
-export const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://mugox-industrial.vercel.app').replace(/\/$/, '');
+// Single production domain. Deliberately NOT read from env or VERCEL_URL so preview URLs can never leak into canonicals, hreflang, sitemap or JSON-LD.
+export const SITE = 'https://trade.mymugox.com';
 export const EMAIL = 'mymugox@gmail.com';
 export const WA = '8619038107246';
 export const waLink = (t: string) => `https://wa.me/${WA}?text=${encodeURIComponent(t)}`;

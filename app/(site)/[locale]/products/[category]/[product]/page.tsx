@@ -4,17 +4,18 @@ import Link from 'next/link';
 import { isLocale, dict, locales } from '@/lib/i18n';
 import { catList, products, getProduct, relatedOf } from '@/lib/data';
 import { Img, Card, Crumbs, JsonLd } from '@/components/ui';
+import { lp, getC } from '@/lib/loc';
 import { TrackView } from '@/components/Analytics';
 import { meta, urlFor, waLink, SITE } from '@/lib/seo';
 type P = { params: Promise<{ locale: string; category: string; product: string }> };
 export const dynamicParams = false;
 export function generateStaticParams() { return locales.flatMap(locale => products.map(p => ({ locale, category: p.cat, product: p.slug }))); }
-export async function generateMetadata({ params }: P): Promise<Metadata> { const { locale, category, product } = await params; const p = getProduct(product); if (!isLocale(locale) || !p || p.cat !== category) return {}; const t = dict[locale]; const c = catList.find(x => x.slug === p.cat)!;
+export async function generateMetadata({ params }: P): Promise<Metadata> { const { locale, category, product } = await params; const p0 = getProduct(product); if (!isLocale(locale) || !p0 || p0.cat !== category) return {}; const p = lp(p0, locale); const t = dict[locale]; const c = catList.find(x => x.slug === p.cat)!;
   return meta(locale, `/products/${p.cat}/${p.slug}`, `${p.name} | ${t[c.key]} | MugoX`, p.summary + ' ' + p.desc.slice(0, 110), p.img ? `/images/${p.img}.webp` : '/og.png'); }
-export default async function Page({ params }: P) { const { locale, category, product } = await params; const p = getProduct(product); if (!isLocale(locale) || !p || p.cat !== category) notFound(); const t = dict[locale]; const c = catList.find(x => x.slug === p.cat)!; const rel = relatedOf(p); const b = `/${locale}`;
+export default async function Page({ params }: P) { const { locale, category, product } = await params; const p0 = getProduct(product); if (!isLocale(locale) || !p0 || p0.cat !== category) notFound(); const p = lp(p0, locale); const ph = getC(locale).ph; const t = dict[locale]; const c = catList.find(x => x.slug === p.cat)!; const rel = relatedOf(p0); const b = `/${locale}`;
   const url = urlFor(locale, `/products/${p.cat}/${p.slug}`);
   return (<div className="w sec tight"><TrackView name={p.name} cat={p.cat} /><Crumbs items={[{ name: t.home, href: b }, { name: t.n_products, href: `${b}/products` }, { name: t[c.key], href: `${b}/products/${c.slug}` }, { name: p.name }]} />
-    <div className="pd"><div><div className="pimg"><Img src={p.img} alt={p.name} sizes="(max-width:900px) 100vw, 560px" priority /></div>{p.gallery && p.gallery.length > 1 && <div className="thumbs">{p.gallery.slice(1).map(g => <div className="tb" key={g}><Img src={g} alt={p.name} sizes="200px" /></div>)}</div>}</div>
+    <div className="pd"><div><div className="pimg"><Img src={p.img} alt={p.name} sizes="(max-width:900px) 100vw, 560px" priority ph={ph} /></div>{p.gallery && p.gallery.length > 1 && <div className="thumbs">{p.gallery.slice(1).map(g => <div className="tb" key={g}><Img src={g} alt={p.name} sizes="200px" ph={ph} /></div>)}</div>}</div>
       <div className="pinfo">{p.soon && <span className="badge">{t.soon_b}</span>}<h1>{p.name}</h1><p className="lead">{p.desc}</p>
         <div className="hc"><Link className="btn p" data-quote="1" href={`${b}/quote?product=${p.slug}`}>{t.reqq}</Link><a className="btn wa" href={waLink(`Hello MugoX Industrial, I am interested in: ${p.name}`)} target="_blank" rel="noopener noreferrer">{t.wa_btn}</a></div></div></div>
     <section className="blk"><h2>{t.specs}</h2><table className="spec"><tbody>{p.specs.map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table>
