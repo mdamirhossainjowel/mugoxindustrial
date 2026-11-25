@@ -1,0 +1,4 @@
+import { products, type Product } from './data';
+export const brands = [{ slug: 'sidel', name: 'Sidel' }, { slug: 'krones', name: 'Krones' }, { slug: 'khs', name: 'KHS' }, { slug: 'sipa', name: 'SIPA' }, { slug: 'sacmi', name: 'SACMI' }, { slug: 'tech-long', name: 'Tech-Long' }, { slug: 'newamstar', name: 'Newamstar' }];
+export const brandProducts = (name: string): Product[] => products.filter(p => !p.soon && (p.cat === 'pet-blow-moulds' || p.slug === 'mould-frames-and-holders') && p.equip.some(e => e.toLowerCase().includes(name.toLowerCase())));
+export function volRange(list: Product[]) { let min = Infinity, max = 0; for (const p of list) { const v = p.specs.find(s => s[0] === 'Bottle volume')?.[1]; const m = v?.match(/(\d+)\D+(\d+)/); if (m) { min = Math.min(min, +m[1]); max = Math.max(max, +m[2]); } } return { min: isFinite(min) ? min : 50, max: max || 2500 }; }

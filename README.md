@@ -29,3 +29,6 @@ Static, no database. 8 languages (en, zh, bn, es, it, pl, fr, ar with RTL), ligh
 - lib/l/en.ts: English page content and articles; lib/l/<lang>.ts: translations of products, pages and articles
 - public/images: product photos, public/logo.png: logo
 - Contact details: lib/seo.ts (EMAIL, WA)
+
+## Features added (all free, no third party)
+Brand pages (/brands), FAQ with FAQPage schema, glossary with DefinedTermSet schema, product compare (/compare, up to 3), image gallery with zoom, print/save-as-PDF button with print stylesheet, copy-message button on the quote form, checklist "what to send", scroll reveal animations (respect reduced motion), WebSite SearchAction (/products?q=), localized 404, PWA manifest, security headers.

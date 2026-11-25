@@ -1,11 +1,12 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Dict, Locale } from '@/lib/i18n';
 import { catList, type Product } from '@/lib/data';
 export default function Catalogue({ items, l, t, ph }: { items: Product[]; l: Locale; t: Dict; ph?: string }) {
   const [q, setQ] = useState(''); const [c, setC] = useState('all'); const [e, setE] = useState('all');
+  useEffect(() => { const q0 = new URLSearchParams(window.location.search).get('q'); if (q0) setQ(q0); }, []);
   const equips = useMemo(() => Array.from(new Set(items.flatMap(p => p.equip).filter(x => /^[A-Z]/.test(x) && x.length < 18))).sort(), [items]);
   const list = items.filter(p => (c === 'all' || p.cat === c) && (e === 'all' || p.equip.includes(e)) && (p.name + ' ' + p.summary + ' ' + p.equip.join(' ')).toLowerCase().includes(q.toLowerCase()));
   return (<div><div className="filters"><input type="search" placeholder={t.search} aria-label={t.search} value={q} onChange={x => setQ(x.target.value)} />
